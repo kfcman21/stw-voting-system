@@ -66,6 +66,7 @@ function setupRealtimeListeners() {
 
     database.ref('empathy').on('value', (snapshot) => {
         const data = snapshot.val();
+        console.log('Firebase 공감 데이터 수신:', data);
         if (data) {
             empathy = data;
             updateEmpathyCounts();
@@ -131,21 +132,36 @@ function empathyVote(category, optionNumber) {
     // 공감 수 증가
     empathy[category][empathyKey]++;
     
+    // 즉시 UI 업데이트
+    const empathyCountElement = document.getElementById(`empathy-count-${category}-${optionNumber}`);
+    if (empathyCountElement) {
+        empathyCountElement.textContent = empathy[category][empathyKey];
+    }
+    
+    // 공감 순위 즉시 업데이트
+    updateEmpathyRankingOnOptions(category);
+    
+    // 공감 아이콘 애니메이션
+    const empathyIcon = document.querySelector(`#empathy-count-${category}-${optionNumber}`).closest('.empathy-option').querySelector('.empathy-heart-icon');
+    if (empathyIcon) {
+        empathyIcon.style.animation = 'heartBeat 0.6s ease-in-out';
+        setTimeout(() => {
+            empathyIcon.style.animation = '';
+        }, 600);
+    }
+    
     // Firebase에 저장
     database.ref(`empathy/${category}/${empathyKey}`).set(empathy[category][empathyKey])
         .then(() => {
             console.log(`${category} 카테고리 ${optionNumber}번 옵션 공감 투표 완료`);
-            // 공감 아이콘 애니메이션
-            const empathyIcon = document.querySelector(`#empathy-count-${category}-${optionNumber}`).previousElementSibling;
-            if (empathyIcon) {
-                empathyIcon.style.animation = 'heartBeat 0.6s ease-in-out';
-                setTimeout(() => {
-                    empathyIcon.style.animation = '';
-                }, 600);
-            }
         })
         .catch((error) => {
             console.error('공감 투표 저장 실패:', error);
+            // 저장 실패 시 로컬 데이터 되돌리기
+            empathy[category][empathyKey]--;
+            if (empathyCountElement) {
+                empathyCountElement.textContent = empathy[category][empathyKey];
+            }
         });
 }
 
@@ -237,9 +253,9 @@ function updateEmpathyCounts() {
 
 // 공감 순위 업데이트
 function updateEmpathyRankings() {
-    updateCategoryEmpathyRanking('see');
-    updateCategoryEmpathyRanking('think');
-    updateCategoryEmpathyRanking('wonder');
+    updateEmpathyRankingOnOptions('see');
+    updateEmpathyRankingOnOptions('think');
+    updateEmpathyRankingOnOptions('wonder');
 }
 
 // 하트 카운트 업데이트
@@ -419,42 +435,54 @@ function updateCategoryEmpathyCounts(category) {
     }
 }
 
-// 각 카테고리별 공감 순위 업데이트
-function updateCategoryEmpathyRanking(category) {
+// 각 카테고리별 공감 순위를 옵션 옆에 표시
+function updateEmpathyRankingOnOptions(category) {
     const categoryEmpathy = empathy[category] || {};
-    const rankingList = document.getElementById(`ranking-list-${category}`);
-    
-    if (!rankingList) return;
     
     // 공감 데이터를 배열로 변환하고 정렬
     const empathyArray = [];
     for (let i = 1; i <= 10; i++) {
         const count = categoryEmpathy[i] || 0;
-        const text = getEmpathyText(category, i);
-        empathyArray.push({ number: i, count: count, text: text });
+        empathyArray.push({ number: i, count: count });
     }
     
     // 공감 수 기준으로 내림차순 정렬
     empathyArray.sort((a, b) => b.count - a.count);
     
-    // 순위 목록 업데이트
-    let html = '';
-    empathyArray.forEach((item, index) => {
-        if (item.count > 0) { // 공감이 있는 항목만 표시
-            html += `
-                <div class="ranking-item">
-                    <span class="ranking-text">${item.text}</span>
-                    <span class="ranking-count">${item.count}표</span>
-                </div>
-            `;
+    // 각 옵션에 순위 표시
+    for (let i = 1; i <= 10; i++) {
+        const optionElement = document.querySelector(`.empathy-option[onclick*="empathyVote('${category}', ${i})"]`);
+        if (optionElement) {
+            // 기존 순위 표시 제거
+            const existingRank = optionElement.querySelector('.empathy-rank-badge');
+            if (existingRank) {
+                existingRank.remove();
+            }
+            
+            // 현재 옵션의 순위 찾기
+            const rankIndex = empathyArray.findIndex(item => item.number === i);
+            if (rankIndex !== -1 && empathyArray[rankIndex].count > 0) {
+                const rank = rankIndex + 1;
+                const rankBadge = document.createElement('div');
+                rankBadge.className = 'empathy-rank-badge';
+                rankBadge.textContent = `${rank}위`;
+                
+                // 순위에 따른 색상 설정
+                if (rank === 1) {
+                    rankBadge.style.background = '#28a745';
+                } else if (rank === 2) {
+                    rankBadge.style.background = '#ffc107';
+                    rankBadge.style.color = '#000';
+                } else if (rank === 3) {
+                    rankBadge.style.background = '#dc3545';
+                } else {
+                    rankBadge.style.background = '#6c757d';
+                }
+                
+                optionElement.appendChild(rankBadge);
+            }
         }
-    });
-    
-    if (html === '') {
-        html = '<div class="ranking-item"><span class="ranking-text">아직 공감 투표가 없습니다.</span></div>';
     }
-    
-    rankingList.innerHTML = html;
 }
 
 // 공감 텍스트 가져오기
@@ -598,4 +626,6 @@ document.addEventListener('keypress', function(event) {
             checkAdmin();
         }
     }
-}); 
+});
+
+ 
