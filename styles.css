@@ -189,6 +189,148 @@ header h1 {
     100% { transform: scale(1); }
 }
 
+/* 공감 투표 섹션 스타일 */
+.empathy-voting-section {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    border: 2px solid #e9ecef;
+}
+
+.empathy-voting-section h3 {
+    color: #2c3e50;
+    font-size: 1.4em;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 10px;
+}
+
+.empathy-options {
+    display: grid;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.empathy-option {
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 15px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.empathy-option:hover {
+    border-color: #e74c3c;
+    box-shadow: 0 3px 10px rgba(231, 76, 60, 0.1);
+    transform: translateY(-1px);
+}
+
+.empathy-text {
+    flex: 1;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.empathy-heart {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.empathy-heart-icon {
+    font-size: 20px;
+    color: #e74c3c;
+    transition: all 0.3s ease;
+}
+
+.empathy-option:hover .empathy-heart-icon {
+    transform: scale(1.1);
+    animation: heartBeat 0.6s ease-in-out;
+}
+
+.empathy-count {
+    font-size: 16px;
+    font-weight: 700;
+    color: #e74c3c;
+    min-width: 25px;
+    text-align: center;
+}
+
+/* 공감 순위 현황 스타일 */
+.empathy-ranking {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    border: 2px solid #667eea;
+}
+
+.empathy-ranking h4 {
+    color: #2c3e50;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.ranking-list {
+    display: grid;
+    gap: 10px;
+}
+
+.ranking-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+    transition: all 0.3s ease;
+}
+
+.ranking-item:nth-child(1) {
+    background: #d4edda;
+    border-left-color: #28a745;
+    font-weight: 600;
+}
+
+.ranking-item:nth-child(2) {
+    background: #fff3cd;
+    border-left-color: #ffc107;
+    font-weight: 600;
+}
+
+.ranking-item:nth-child(3) {
+    background: #f8d7da;
+    border-left-color: #dc3545;
+    font-weight: 600;
+}
+
+.ranking-text {
+    flex: 1;
+    font-size: 14px;
+    color: #2c3e50;
+    line-height: 1.4;
+}
+
+.ranking-count {
+    font-size: 16px;
+    font-weight: 700;
+    color: #e74c3c;
+    margin-left: 15px;
+}
+
 .vote-buttons {
     display: flex;
     gap: 10px;
@@ -382,6 +524,27 @@ header h1 {
     .vote-summary {
         flex-direction: column;
         gap: 8px;
+    }
+    
+    .empathy-option {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .empathy-heart {
+        align-self: flex-end;
+    }
+    
+    .ranking-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .ranking-count {
+        align-self: flex-end;
+        margin-left: 0;
     }
     
     .admin-controls {
