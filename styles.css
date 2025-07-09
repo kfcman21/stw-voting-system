@@ -1,0 +1,312 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+header h1 {
+    color: #2c3e50;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.admin-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.admin-controls input {
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    width: 200px;
+    transition: border-color 0.3s ease;
+}
+
+.admin-controls input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.admin-controls button {
+    padding: 12px 20px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.admin-controls button:hover {
+    background: #5a6fd8;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+#resetBtn {
+    background: #e74c3c;
+}
+
+#resetBtn:hover {
+    background: #c0392b;
+}
+
+.voting-sections {
+    display: grid;
+    gap: 30px;
+}
+
+.voting-section {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.voting-section h2 {
+    color: #2c3e50;
+    font-size: 1.8em;
+    margin-bottom: 25px;
+    font-weight: 600;
+    text-align: center;
+    border-bottom: 3px solid #667eea;
+    padding-bottom: 15px;
+}
+
+.options {
+    display: grid;
+    gap: 20px;
+}
+
+.option {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.option:hover {
+    border-color: #667eea;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+}
+
+.option-text {
+    display: block;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.vote-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.vote-buttons button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    min-width: 80px;
+}
+
+.vote-buttons button:nth-child(1) {
+    background: #27ae60;
+    color: white;
+}
+
+.vote-buttons button:nth-child(1):hover {
+    background: #229954;
+    transform: translateY(-1px);
+}
+
+.vote-buttons button:nth-child(2) {
+    background: #f39c12;
+    color: white;
+}
+
+.vote-buttons button:nth-child(2):hover {
+    background: #e67e22;
+    transform: translateY(-1px);
+}
+
+.vote-buttons button:nth-child(3) {
+    background: #e74c3c;
+    color: white;
+}
+
+.vote-buttons button:nth-child(3):hover {
+    background: #c0392b;
+    transform: translateY(-1px);
+}
+
+.results {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+}
+
+.results h3 {
+    color: #2c3e50;
+    font-size: 1.4em;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.ranking-table th,
+.ranking-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.ranking-table th {
+    background: #667eea;
+    color: white;
+    font-weight: 600;
+}
+
+.ranking-table tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+.ranking-table tr:hover {
+    background: #e9ecef;
+}
+
+.rank-1 {
+    background: #d4edda !important;
+    font-weight: 600;
+}
+
+.rank-2 {
+    background: #fff3cd !important;
+    font-weight: 600;
+}
+
+.rank-3 {
+    background: #f8d7da !important;
+    font-weight: 600;
+}
+
+.vote-count {
+    font-weight: 600;
+    color: #667eea;
+}
+
+.total-votes {
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px;
+    background: #667eea;
+    color: white;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    header {
+        padding: 20px;
+    }
+    
+    header h1 {
+        font-size: 2em;
+    }
+    
+    .voting-section {
+        padding: 20px;
+    }
+    
+    .voting-section h2 {
+        font-size: 1.5em;
+    }
+    
+    .option {
+        padding: 15px;
+    }
+    
+    .vote-buttons {
+        flex-direction: column;
+    }
+    
+    .vote-buttons button {
+        width: 100%;
+    }
+    
+    .admin-controls {
+        flex-direction: column;
+    }
+    
+    .admin-controls input {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.8em;
+    }
+    
+    .voting-section h2 {
+        font-size: 1.3em;
+    }
+    
+    .option-text {
+        font-size: 14px;
+    }
+} 

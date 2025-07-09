@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>개념기반 탐구학습 S-T-W 실시간 투표</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>개념기반 탐구학습 S-T-W 실시간 투표</h1>
+            <div class="admin-controls">
+                <input type="password" id="adminPassword" placeholder="관리자 비밀번호" maxlength="4">
+                <button onclick="checkAdmin()">관리자 로그인</button>
+                <button id="resetBtn" onclick="resetVotes()" style="display: none;">투표 초기화</button>
+            </div>
+        </header>
+
+        <div class="voting-sections">
+            <!-- SEE 섹션 -->
+            <section class="voting-section">
+                <h2>SEE (관찰) - 영상 속 수업에서 가장 먼저 눈에 띄는 장면은 무엇인가요?</h2>
+                <div class="options">
+                    <div class="option" onclick="vote('see', 1)">
+                        <span class="option-text">교사가 아닌 학생들의 활발한 토론과 상호작용이 눈에 띕니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('see', 1, 1)">1순위</button>
+                            <button onclick="vote('see', 1, 2)">2순위</button>
+                            <button onclick="vote('see', 1, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('see', 2)">
+                        <span class="option-text">학생들이 질문하고 답을 찾아가는 과정이 영상의 중심을 이룹니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('see', 2, 1)">1순위</button>
+                            <button onclick="vote('see', 2, 2)">2순위</button>
+                            <button onclick="vote('see', 2, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('see', 3)">
+                        <span class="option-text">교사가 학생들에게 정답을 알려주기보다, 생각을 촉진하는 질문을 던지는 모습이 인상적입니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('see', 3, 1)">1순위</button>
+                            <button onclick="vote('see', 3, 2)">2순위</button>
+                            <button onclick="vote('see', 3, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('see', 4)">
+                        <span class="option-text">다양한 자료나 도구를 활용하여 학생들이 스스로 무언가를 '조사'하고 '탐구'하는 활동이 두드러집니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('see', 4, 1)">1순위</button>
+                            <button onclick="vote('see', 4, 2)">2순위</button>
+                            <button onclick="vote('see', 4, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('see', 5)">
+                        <span class="option-text">수업의 초점이 특정 '개념'이나 '큰 아이디어'에 맞춰져 있음을 시사하는 시각 자료나 활동이 보입니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('see', 5, 1)">1순위</button>
+                            <button onclick="vote('see', 5, 2)">2순위</button>
+                            <button onclick="vote('see', 5, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('see', 6)">
+                        <span class="option-text">학생들이 개인별 활동보다는 소그룹으로 협력하여 과제를 해결하는 모습이 많이 관찰됩니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('see', 6, 1)">1순위</button>
+                            <button onclick="vote('see', 6, 2)">2순위</button>
+                            <button onclick="vote('see', 6, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('see', 7)">
+                        <span class="option-text">학생들이 자신의 생각이나 결과물을 발표하고 공유하는 시간이 할애되어 있습니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('see', 7, 1)">1순위</button>
+                            <button onclick="vote('see', 7, 2)">2순위</button>
+                            <button onclick="vote('see', 7, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('see', 8)">
+                        <span class="option-text">교실 분위기가 경쟁적이기보다는 협력적이고 자유로운 분위기로 느껴집니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('see', 8, 1)">1순위</button>
+                            <button onclick="vote('see', 8, 2)">2순위</button>
+                            <button onclick="vote('see', 8, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('see', 9)">
+                        <span class="option-text">단순 지식 암기가 아닌, 심층적인 사고나 문제 해결 과정을 거치는 활동이 눈에 들어옵니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('see', 9, 1)">1순위</button>
+                            <button onclick="vote('see', 9, 2)">2순위</button>
+                            <button onclick="vote('see', 9, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('see', 10)">
+                        <span class="option-text">학생들의 표정에서 호기심과 주도적인 참여 의지가 느껴집니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('see', 10, 1)">1순위</button>
+                            <button onclick="vote('see', 10, 2)">2순위</button>
+                            <button onclick="vote('see', 10, 3)">3순위</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="results" id="see-results"></div>
+            </section>
+
+            <!-- THINK 섹션 -->
+            <section class="voting-section">
+                <h2>THINK (분석) - 교사와 학생은 각각 어떤 활동을 하고 있나요? 교사의 의도나 전략은 무엇이었을까요?</h2>
+                <div class="options">
+                    <div class="option" onclick="vote('think', 1)">
+                        <span class="option-text">교사는 '질문 촉진자'로서 정답이 아닌 사고를 자극하는 본질적 질문을 지속적으로 던집니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('think', 1, 1)">1순위</button>
+                            <button onclick="vote('think', 1, 2)">2순위</button>
+                            <button onclick="vote('think', 1, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('think', 2)">
+                        <span class="option-text">교사는 학습 내용의 단순 전달자가 아닌, 학생들의 탐구를 돕는 '탐구 조력자' 역할을 수행합니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('think', 2, 1)">1순위</button>
+                            <button onclick="vote('think', 2, 2)">2순위</button>
+                            <button onclick="vote('think', 2, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('think', 3)">
+                        <span class="option-text">개념 중심의 학습 활동을 설계하여 단편적 지식보다는 개념 간의 연결성과 맥락을 강조합니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('think', 3, 1)">1순위</button>
+                            <button onclick="vote('think', 3, 2)">2순위</button>
+                            <button onclick="vote('think', 3, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('think', 4)">
+                        <span class="option-text">협력적 탐구 활동을 구조화하여 소그룹 활동을 통해 학생들이 자연스럽게 관계 역량을 함양하도록 유도합니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('think', 4, 1)">1순위</button>
+                            <button onclick="vote('think', 4, 2)">2순위</button>
+                            <button onclick="vote('think', 4, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('think', 5)">
+                        <span class="option-text">학생들의 '의미 구성'을 돕기 위해 다양한 맥락에서 개념을 직접 경험하고 적용해볼 기회를 제공합니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('think', 5, 1)">1순위</button>
+                            <button onclick="vote('think', 5, 2)">2순위</button>
+                            <button onclick="vote('think', 5, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('think', 6)">
+                        <span class="option-text">학생들의 사고 과정과 활동에 대한 피드백을 제공하여, 단순히 맞고 틀림을 넘어선 심층적 사고를 유도합니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('think', 6, 1)">1순위</button>
+                            <button onclick="vote('think', 6, 2)">2순위</button>
+                            <button onclick="vote('think', 6, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('think', 7)">
+                        <span class="option-text">지식의 유통기한이 짧아지는 시대에 맞춰 단순 지식 암기보다 개념적 사고 함양에 중점을 둡니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('think', 7, 1)">1순위</button>
+                            <button onclick="vote('think', 7, 2)">2순위</button>
+                            <button onclick="vote('think', 7, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('think', 8)">
+                        <span class="option-text">학생들은 교사의 본질적 질문에 대해 정답을 찾기보다, 스스로 탐구하고 사고하는 과정에 적극적으로 참여합니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('think', 8, 1)">1순위</button>
+                            <button onclick="vote('think', 8, 2)">2순위</button>
+                            <button onclick="vote('think', 8, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('think', 9)">
+                        <span class="option-text">학생들은 사실과 기능을 개념 형성 및 원리 탐구에 활용하며 깊이 있는 사고를 함양합니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('think', 9, 1)">1순위</button>
+                            <button onclick="vote('think', 9, 2)">2순위</button>
+                            <button onclick="vote('think', 9, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('think', 10)">
+                        <span class="option-text">학생들은 학습한 개념을 다른 상황에 적용하며, 맥락이 바뀌어도 전이 가능한 이해를 발달시킵니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('think', 10, 1)">1순위</button>
+                            <button onclick="vote('think', 10, 2)">2순위</button>
+                            <button onclick="vote('think', 10, 3)">3순위</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="results" id="think-results"></div>
+            </section>
+
+            <!-- WONDER 섹션 -->
+            <section class="voting-section">
+                <h2>WONDER (궁금증/성찰) - 이 수업 방식은 학생에게 어떤 영향을 줄 수 있을까요? 내 교실에서도 실천할 수 있을까요?</h2>
+                <div class="options">
+                    <div class="option" onclick="vote('wonder', 1)">
+                        <span class="option-text">단순 암기를 넘어선 깊이 있는 개념적 이해를 형성하여, 지식이 오래 지속되고 유용하게 활용될 수 있습니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('wonder', 1, 1)">1순위</button>
+                            <button onclick="vote('wonder', 1, 2)">2순위</button>
+                            <button onclick="vote('wonder', 1, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('wonder', 2)">
+                        <span class="option-text">학생들은 새로운 상황과 문제에 배운 개념을 적용하고 응용하는 '전이 가능성'을 효과적으로 기를 수 있습니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('wonder', 2, 1)">1순위</button>
+                            <button onclick="vote('wonder', 2, 2)">2순위</button>
+                            <button onclick="vote('wonder', 2, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('wonder', 3)">
+                        <span class="option-text">자신이 직접 탐구하고 의미를 구성하는 경험을 통해 학습에 대한 흥미와 동기가 높아질 것입니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('wonder', 3, 1)">1순위</button>
+                            <button onclick="vote('wonder', 3, 2)">2순위</button>
+                            <button onclick="vote('wonder', 3, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('wonder', 4)">
+                        <span class="option-text">'왜?', '어떻게?'와 같은 본질적 질문을 통해 비판적 사고력과 문제 해결 능력이 크게 향상될 것입니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('wonder', 4, 1)">1순위</button>
+                            <button onclick="vote('wonder', 4, 2)">2순위</button>
+                            <button onclick="vote('wonder', 4, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('wonder', 5)">
+                        <span class="option-text">교과 간의 연결성을 파악하고 통합적인 관점을 형성하는 능력을 기를 수 있어, 지식의 폭과 깊이가 확장될 것입니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('wonder', 5, 1)">1순위</button>
+                            <button onclick="vote('wonder', 5, 2)">2순위</button>
+                            <button onclick="vote('wonder', 5, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('wonder', 6)">
+                        <span class="option-text">협력적인 학습을 통해 의사소통 능력, 팀워크, 타인의 관점을 이해하는 사회적 역량이 발달할 것입니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('wonder', 6, 1)">1순위</button>
+                            <button onclick="vote('wonder', 6, 2)">2순위</button>
+                            <button onclick="vote('wonder', 6, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('wonder', 7)">
+                        <span class="option-text">빠르게 변화하는 지식 사회에서 새로운 지식을 끊임없이 학습하고 활용할 수 있는 역량을 갖추게 될 것입니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('wonder', 7, 1)">1순위</button>
+                            <button onclick="vote('wonder', 7, 2)">2순위</button>
+                            <button onclick="vote('wonder', 7, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('wonder', 8)">
+                        <span class="option-text">이 수업 방식을 내 교실에서도 실천하기 위해서는 교사의 역할이 '지식 전달자'에서 '질문 촉진자' 및 '학습 설계자'로 재정의되는 노력이 필요할 것입니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('wonder', 8, 1)">1순위</button>
+                            <button onclick="vote('wonder', 8, 2)">2순위</button>
+                            <button onclick="vote('wonder', 8, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('wonder', 9)">
+                        <span class="option-text">기존의 교과 내용을 단순히 암기하는 방식에서 벗어나, 각 단원의 '핵심 개념'과 '본질적 질문'을 중심으로 수업을 재구성하는 전략이 중요할 것입니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('wonder', 9, 1)">1순위</button>
+                            <button onclick="vote('wonder', 9, 2)">2순위</button>
+                            <button onclick="vote('wonder', 9, 3)">3순위</button>
+                        </div>
+                    </div>
+                    <div class="option" onclick="vote('wonder', 10)">
+                        <span class="option-text">당장 큰 변화를 시도하기보다는, 소그룹 탐구 활동을 늘리거나 특정 주제에 대한 본질적 질문을 도입하는 등 점진적인 방식으로 접근해 볼 수 있을 것 같습니다.</span>
+                        <div class="vote-buttons">
+                            <button onclick="vote('wonder', 10, 1)">1순위</button>
+                            <button onclick="vote('wonder', 10, 2)">2순위</button>
+                            <button onclick="vote('wonder', 10, 3)">3순위</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="results" id="wonder-results"></div>
+            </section>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
