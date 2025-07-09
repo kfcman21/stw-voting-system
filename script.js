@@ -1,10 +1,9 @@
 // Firebase 초기화
-const firebaseConfig = window.firebaseConfig;
-if (!firebaseConfig) {
+if (!window.firebaseConfig) {
     console.error('Firebase 설정을 찾을 수 없습니다. firebase-config.js 파일을 확인하세요.');
 }
 
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(window.firebaseConfig);
 const database = firebase.database();
 
 
